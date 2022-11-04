@@ -1,16 +1,22 @@
 #include <iostream>
-#define Bloc8x8 8
+#include <cmath>
+/**
+ * @brief Bloc size
+ * 
+ */
+#define Bloc8 8
+const int m = 8, n = 8;
+/**
+ * @brief cCompression Class definition
+ * 
+ */
 class cCompression{
 
 unsigned int mLargeur , mHauteur;
-unsigned char **mBuffer;
+char **mBuffer;
 unsigned int mQualite;
-unsigned char Bloc[8][8]={1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8};
-
-void Calcul_DCT_Block(double **DCT_Img,unsigned char **Block8x8);
-void Calcul_iDCT(unsigned char **Block8x8,double **DCT_Img);
-void quant_JPEG(double **Img_DCT,int **Img_Quant);
-void dequant_JPEG(double **Img_Quant,int **Img_DCT);
+double coeff(char u)const;
+double DCT_Sum(int Block8x8[][Bloc8])const;
 public:
     cCompression();
     ~cCompression();
@@ -18,6 +24,11 @@ public:
     unsigned int get_mLargeur(void)const;
     unsigned int get_mHauteur(void)const;
     unsigned int get_mQualite(void)const;
+
+    void Calcul_DCT_Block(char (*Block8x8)[Bloc8],double(*DCT_Img)[Bloc8])const;
+    void Calcul_iDCT(double(*DCT_Img)[Bloc8],char (*Block8x8)[Bloc8])const;
+    void quant_JPEG(double **Img_DCT,int **Img_Quant);
+    void dequant_JPEG(double **Img_Quant,int **Img_DCT);
 
     void set_mLargeur(unsigned int Lar );
     void set_mHauteur(unsigned int HAU);
