@@ -49,7 +49,7 @@ void cCompression::set_mLargeur(unsigned int HAU){
 }
 
 double cCompression::coeff(char u)const{
-    return u==0?(1.0/sqrt(2)):(u>1 && u<7);
+    return u==0?(1.0/sqrt(2)):(u>=1 && u<=7);
 }
 double cCompression::DCT_Sum(int Block8x8[][Bloc8])const{
     double s =0.0;
