@@ -15,7 +15,7 @@ class cCompression{
 unsigned int mLargeur , mHauteur;
 char **mBuffer;
 unsigned int mQualite;
-double coeff(char u)const;
+double coeff(unsigned int u)const;
 double DCT_Sum(int Block8x8[][Bloc8])const;
 public:
     cCompression();

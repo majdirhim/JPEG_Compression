@@ -48,7 +48,7 @@ void cCompression::set_mLargeur(unsigned int HAU){
     mLargeur=HAU;
 }
 
-double cCompression::coeff(char u)const{
+double cCompression::coeff(unsigned int u)const{
     return u==0?(1.0/sqrt(2)):(u>=1 && u<=7);
 }
 double cCompression::DCT_Sum(int Block8x8[][Bloc8])const{
@@ -91,7 +91,7 @@ void cCompression::Calcul_iDCT(double(*DCT_Img)[Bloc8],char (*Block8x8)[Bloc8])c
             for(unsigned int u=0;u<Bloc8;u++)
                 for(unsigned int v=0;v<Bloc8;v++)
                     s+=*(*(DCT_Img+u)+v)*coeff(u)*coeff(v)*cos((2*x+1)*M_PI*u/16.0)*cos((2*y+1)*M_PI*v/16.0);
-            *(*(Block8x8+x)+y)=s/4.0;
+            *(*(Block8x8+x)+y)=(char)s/4;
         }
     }
 }

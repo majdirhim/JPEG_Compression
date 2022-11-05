@@ -17,9 +17,9 @@ test.Calcul_DCT_Block(Bloc,img);
 
 for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
-        printf("%lf\t", img[i][j]);
+        std::cout<<img[i][j]<<"\t";
     }
-    printf("\n");
+    std::cout<<"\n";
 }
 
 
@@ -27,9 +27,9 @@ test.Calcul_iDCT(img,IBloc);
 std::cout<<"\n";
 for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
-        printf("%lf\t", IBloc[i][j]);
+        std::cout <<(int)IBloc[i][j]<<"\t";
     }
-    printf("\n");
+    std::cout <<"\n";
 }
 return 0;
 }
