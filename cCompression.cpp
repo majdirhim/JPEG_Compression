@@ -51,11 +51,19 @@ void cCompression::set_mLargeur(unsigned int HAU){
 double cCompression::coeff(unsigned int u)const{
     return u==0?(1.0/sqrt(2)):(u>=1 && u<=7);
 }
-double cCompression::DCT_Sum(int Block8x8[][Bloc8])const{
-    double s =0.0;
 
-    return s;
+/**
+ * @brief scale the values to be between -127 and 128 
+ * @param Block8x8
+ */
+void cCompression::toSigned(uint8_t (*Block8x8)[Bloc8])const{
+    for(unsigned int i=0;i<Bloc8;i++){
+        for(unsigned int j=0;j<Bloc8;j++){
+            *(*(Block8x8+i)+j)-=128;
+        }
+    }
 }
+
 /**
  * @brief Apply the Discrete cosine transform function to a block of image 8x8
  * 
@@ -63,8 +71,9 @@ double cCompression::DCT_Sum(int Block8x8[][Bloc8])const{
  * @param Block8x8 : pointer
  */
 
-void cCompression::Calcul_DCT_Block(char (*Block8x8)[Bloc8],double(*DCT_Img)[Bloc8])const{
-    double s=0.0;
+void cCompression::Calcul_DCT_Block(uint8_t (*Block8x8)[Bloc8],double(*DCT_Img)[Bloc8])const{
+    double s;
+    toSigned(Block8x8);
     for(unsigned int u=0;u<Bloc8;u++){
         for(unsigned int v=0;v<Bloc8;v++){
             s=0.0;
@@ -83,15 +92,15 @@ void cCompression::Calcul_DCT_Block(char (*Block8x8)[Bloc8],double(*DCT_Img)[Blo
  * @param Block8x8 
  */
 
-void cCompression::Calcul_iDCT(double(*DCT_Img)[Bloc8],char (*Block8x8)[Bloc8])const{
-    double s=0.0;
+void cCompression::Calcul_iDCT(double(*DCT_Img)[Bloc8],uint8_t  (*Block8x8)[Bloc8])const{
+    long double s;
     for(unsigned int x=0;x<Bloc8;x++){
         for(unsigned int y=0;y<Bloc8;y++){
-            s=0.0;
+            s=0.000;
             for(unsigned int u=0;u<Bloc8;u++)
                 for(unsigned int v=0;v<Bloc8;v++)
-                    s+=*(*(DCT_Img+u)+v)*coeff(u)*coeff(v)*cos((2*x+1)*M_PI*u/16.0)*cos((2*y+1)*M_PI*v/16.0);
-            *(*(Block8x8+x)+y)=(char)s/4;
+                    s+=*(*(DCT_Img+u)+v)*coeff(u)*coeff(v)*cos((2*x+1)*M_PI*u/16.000)*cos((2*y+1)*M_PI*v/16.000);
+            *(*(Block8x8+x)+y)=(uint8_t)lround(s/4.0); //Convert the double to nearest uint8_t value
         }
     }
 }

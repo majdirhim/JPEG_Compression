@@ -16,7 +16,7 @@ unsigned int mLargeur , mHauteur;
 char **mBuffer;
 unsigned int mQualite;
 double coeff(unsigned int u)const;
-double DCT_Sum(int Block8x8[][Bloc8])const;
+void toSigned(uint8_t (*Block8x8)[Bloc8])const;
 public:
     cCompression();
     ~cCompression();
@@ -25,8 +25,8 @@ public:
     unsigned int get_mHauteur(void)const;
     unsigned int get_mQualite(void)const;
 
-    void Calcul_DCT_Block(char (*Block8x8)[Bloc8],double(*DCT_Img)[Bloc8])const;
-    void Calcul_iDCT(double(*DCT_Img)[Bloc8],char (*Block8x8)[Bloc8])const;
+    void Calcul_DCT_Block(uint8_t (*Block8x8)[Bloc8],double(*DCT_Img)[Bloc8])const;
+    void Calcul_iDCT(double(*DCT_Img)[Bloc8],uint8_t  (*Block8x8)[Bloc8])const;
     void quant_JPEG(double **Img_DCT,int **Img_Quant);
     void dequant_JPEG(double **Img_Quant,int **Img_DCT);
 
