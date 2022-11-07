@@ -14,6 +14,15 @@ cCompression::~cCompression(){
     
 }
 /**
+ * @brief getter for mQualite
+ * 
+ * @return unsigned int 
+ */
+unsigned int cCompression::get_mQualite(void)const{
+    return mQualite;
+}
+
+/**
  * @brief getter for mHauteur
  * 
  * @return unsigned int 
@@ -46,6 +55,10 @@ void cCompression::set_mHauteur(unsigned int Lar){
  */
 void cCompression::set_mLargeur(unsigned int HAU){
     mLargeur=HAU;
+}
+
+void cCompression::set_mQualite(unsigned int Q){
+    mQualite=Q;
 }
 
 double cCompression::coeff(unsigned int u)const{
@@ -106,8 +119,30 @@ void cCompression::Calcul_iDCT(double(*DCT_Img)[Bloc8],uint8_t  (*Block8x8)[Bloc
 }
 
 
-void cCompression::quant_JPEG(double **Img_DCT,int **Img_Quant){
+double cCompression::lambda(unsigned int Quality)const{
+    return ( Quality<50 ? 5000.0/Quality : 200.0-(2.0*Quality) );
+}
 
+double cCompression::QTable(unsigned int i , unsigned j)const{
+    double res=(lambda(mQualite)*(*(*(RefTable+i)+j))+50.0)/100.0;
+    if(res<1)
+        return 1.00;
+    else if (res>255)
+        return 255.00;
+    else
+        return res;
+}
+
+/**
+ * @brief Quantify a matrix depending on Fq factor and a reference table
+ * 
+ * @param Img_DCT 
+ * @param Img_Quant 
+ */
+void cCompression::quant_JPEG(double(*DCT_Img)[Bloc8],int (*Img_Quant)[Bloc8]){
+    for(unsigned int u=0 ; u<Bloc8 ;u++)
+        for(unsigned int v=0 ; v<Bloc8 ;v++)
+            *(*(Img_Quant+u)+v)=round((*(*(DCT_Img+u)+v))/QTable(u,v));
 }
 void cCompression::dequant_JPEG(double **Img_Quant,int **Img_DCT){
 

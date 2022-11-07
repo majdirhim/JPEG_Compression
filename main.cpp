@@ -12,26 +12,36 @@ uint8_t Bloc[8][8] = {      {139,144,149,153,155,155,155,155},
                             {162,162,161,161,163,158,158,158}
                         };
 
-uint8_t  IBloc[8][8];
-double img[8][8];
+int  Qimg[8][8];
+double DCT_img[8][8] ;
 cCompression test;
-test.Calcul_DCT_Block(Bloc,img);
+test.Calcul_DCT_Block(Bloc,DCT_img);
 
 for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
-        printf("%.2lf\t",img[i][j]);
+        printf("%.2lf\t",DCT_img[i][j]);
     }
     printf("\n");
 }
 
+test.set_mQualite(50);
+test.quant_JPEG(DCT_img,Qimg);
+std::cout<<"\n";
+for (int i = 0; i < 8; i++) {
+    for (int j = 0; j < 8; j++) {
+        printf("%d\t",Qimg[i][j]);
+    }
+printf("\n");
+}
 
-test.Calcul_iDCT(img,IBloc);
+
+/*test.Calcul_iDCT(img,IBloc);
 std::cout<<"\n";
 for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
         printf("%hhu\t",IBloc[i][j]);
     }
     printf("\n");
-}
+}*/
 return 0;
 }
