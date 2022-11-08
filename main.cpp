@@ -34,6 +34,16 @@ for (int i = 0; i < 8; i++) {
 printf("\n");
 }
 
+printf("\n");
+test.dequant_JPEG(Qimg,DCT_img);
+std::cout<<"\n";
+for (int i = 0; i < 8; i++) {
+    for (int j = 0; j < 8; j++) {
+        printf("%.2lf\t",DCT_img[i][j]);
+    }
+printf("\n");
+}
+
 
 /*test.Calcul_iDCT(img,IBloc);
 std::cout<<"\n";

@@ -124,11 +124,11 @@ double cCompression::lambda(unsigned int Quality)const{
 }
 
 double cCompression::QTable(unsigned int i , unsigned j)const{
-    double res=(lambda(mQualite)*(*(*(RefTable+i)+j))+50.0)/100.0;
+    double res=(lambda(mQualite)*(*(*(RefTable+i)+j))+50)/100;
     if(res<1)
-        return 1.00;
+        return 1;
     else if (res>255)
-        return 255.00;
+        return 255;
     else
         return res;
 }
@@ -144,8 +144,10 @@ void cCompression::quant_JPEG(double(*DCT_Img)[Bloc8],int (*Img_Quant)[Bloc8]){
         for(unsigned int v=0 ; v<Bloc8 ;v++)
             *(*(Img_Quant+u)+v)=round((*(*(DCT_Img+u)+v))/QTable(u,v));
 }
-void cCompression::dequant_JPEG(double **Img_Quant,int **Img_DCT){
-
+void cCompression::dequant_JPEG(int (*Img_Quant)[Bloc8],double(*DCT_Img)[Bloc8])const{
+for(unsigned int u=0 ; u<Bloc8 ;u++)
+        for(unsigned int v=0 ; v<Bloc8 ;v++)
+            (*(*(DCT_Img+u)+v))=round(*(*(Img_Quant+u)+v)*QTable(u,v));
 }
 
 
