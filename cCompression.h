@@ -45,6 +45,8 @@ public:
     void quant_JPEG(double(*DCT_Img)[Bloc8],int (*Img_Quant)[Bloc8]);
     void dequant_JPEG(int (*Img_Quant)[Bloc8],double(*DCT_Img)[Bloc8])const;
 
+    double EQM(uint8_t (*Bloc8x8)[Bloc8],uint8_t (*IDCT)[Bloc8])const;
+    double Taux_Compression(uint8_t (*Bloc8x8)[Bloc8],int (*Qimg)[Bloc8])const;
     
 
 

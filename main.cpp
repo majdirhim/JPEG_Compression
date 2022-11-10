@@ -12,9 +12,13 @@ uint8_t Bloc[8][8] = {      {139,144,149,153,155,155,155,155},
                             {162,162,161,161,163,158,158,158}
                         };
 
+
 int  Qimg[8][8];
 double DCT_img[8][8] ;
+
 cCompression test;
+
+//DCT
 test.Calcul_DCT_Block(Bloc,DCT_img);
 
 for (int i = 0; i < 8; i++) {
@@ -24,7 +28,9 @@ for (int i = 0; i < 8; i++) {
     printf("\n");
 }
 
-test.set_mQualite(50);
+test.set_mQualite(50); // qualité 50%
+
+//Quantification
 test.quant_JPEG(DCT_img,Qimg);
 std::cout<<"\n";
 for (int i = 0; i < 8; i++) {
@@ -35,6 +41,8 @@ printf("\n");
 }
 
 printf("\n");
+
+//Dequantification
 test.dequant_JPEG(Qimg,DCT_img);
 std::cout<<"\n";
 for (int i = 0; i < 8; i++) {
@@ -43,15 +51,25 @@ for (int i = 0; i < 8; i++) {
     }
 printf("\n");
 }
+uint8_t IBloc[8][8];
+printf("\n");
 
-
-/*test.Calcul_iDCT(img,IBloc);
-std::cout<<"\n";
+//IDCT
+test.Calcul_iDCT(DCT_img,IBloc);
 for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
-        printf("%hhu\t",IBloc[i][j]);
+        printf("%d\t",(int)IBloc[i][j]);
     }
-    printf("\n");
-}*/
+printf("\n");
+}
+
+// EQM
+std::cout <<"\n";
+std::cout <<test.EQM(Bloc,IBloc)<<"\n";
+
+//Taux
+std::cout <<"\n";
+std::cout <<test.Taux_Compression(Bloc,Qimg)<<"\n";
+
 return 0;
 }
