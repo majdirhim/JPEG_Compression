@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <cstdio>
 /**
  * @brief Bloc size
  * 
@@ -15,6 +16,14 @@ class cCompression{
 unsigned int mLargeur , mHauteur;
 char **mBuffer;
 unsigned int mQualite;
+//Different states for RLE 
+enum State{
+    Strate_H,
+    Down,
+    Strate_V,
+    UP,
+    Exit
+};
 uint8_t RefTable[Bloc8][Bloc8]={{16,11 ,10 ,16 ,24 ,40, 51, 61},
                                 {12 ,12 ,14 ,19 ,26 ,58 ,60 ,55},
                                 {14 ,13 ,16 ,24 ,40 ,57 ,69 ,56},
@@ -28,6 +37,7 @@ double coeff(unsigned int u)const;
 void toSigned(uint8_t (*Block8x8)[Bloc8])const;
 double lambda(unsigned int Quality)const;
 double QTable(unsigned int i , unsigned j)const;
+void State_Machine_RLE(int (*Qimg)[Bloc8],int DC_precedent,int *Trame)const;
 public:
     cCompression();
     ~cCompression();
@@ -48,6 +58,7 @@ public:
     double EQM(uint8_t (*Bloc8x8)[Bloc8],uint8_t (*IDCT)[Bloc8])const;
     double Taux_Compression(uint8_t (*Bloc8x8)[Bloc8],int (*Qimg)[Bloc8])const;
     
-
+    void RLE_Block(int (*Qimg)[Bloc8],int DC_precedent ,int *Trame)const;
+    void RLE(char* Trame)const;
 
 };

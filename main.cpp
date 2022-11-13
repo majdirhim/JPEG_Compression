@@ -15,7 +15,7 @@ uint8_t Bloc[8][8] = {      {139,144,149,153,155,155,155,155},
 
 int  Qimg[8][8];
 double DCT_img[8][8] ;
-
+int Trame[64];
 cCompression test;
 
 //DCT
@@ -71,5 +71,13 @@ std::cout <<test.EQM(Bloc,IBloc)<<"\n";
 std::cout <<"\n";
 std::cout <<test.Taux_Compression(Bloc,Qimg)<<"\n";
 
+//RLE
+std::cout<<"\nRLE\n";
+
+test.RLE_Block(Qimg,15,Trame);
+for(int i=0;i<64;i++)
+    printf("trame=%d\n",Trame[i]);
 return 0;
 }
+
+
