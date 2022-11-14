@@ -194,7 +194,13 @@ double cCompression::Taux_Compression(uint8_t (*Bloc8x8)[Bloc8],int (*Qimg)[Bloc
     
 }
 
-
+/**
+ * @brief 
+ * 
+ * @param Qimg : Quantified Image
+ * @param DC_precedent  : Qimg[0] - Average previous Trame
+ * @param Trame : compressed (lossless) quantified Image
+ */
 void cCompression::State_Machine_RLE(int (*Qimg)[Bloc8],int DC_precedent,int *Trame)const{
 unsigned int i =0 , j=0 , t=0;
 State state=Strate_H;
@@ -254,5 +260,21 @@ printf("state : %d\t i=%d\t j=%d\t t=%d\r\n",state,i,j,t);
 
 void cCompression::RLE_Block(int (*Qimg)[Bloc8],int DC_precedent ,int *Trame)const{
 unsigned int zeros=0;
-State_Machine_RLE(Qimg,DC_precedent,Trame);
+int tab[64];
+State_Machine_RLE(Qimg,DC_precedent,tab);
+Trame[0]=DC_precedent;
+for(unsigned int i=1,j=0;i<Bloc8*Bloc8;i++){
+    if(tab[i]==0){
+        zeros++;
+    }
+    else{
+        Trame[++j]=zeros;
+        Trame[++j]=tab[i];
+        zeros=0;
+    }
+    if(tab[i]==0 && i==Bloc8*Bloc8-1){
+        Trame[++j]=0;
+        Trame[++j]=0;
+    }
+}
 }

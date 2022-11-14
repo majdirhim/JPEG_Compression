@@ -74,9 +74,11 @@ std::cout <<test.Taux_Compression(Bloc,Qimg)<<"\n";
 //RLE
 std::cout<<"\nRLE\n";
 
-test.RLE_Block(Qimg,15,Trame);
-for(int i=0;i<64;i++)
-    printf("trame=%d\n",Trame[i]);
+test.RLE_Block(Qimg,14,Trame);
+printf("Trame= [");
+for(int i=0;i<13;i++)
+    printf("%d, ",Trame[i]);
+printf("]\n");
 return 0;
 }
 
