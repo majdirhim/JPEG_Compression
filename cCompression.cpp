@@ -129,7 +129,7 @@ double cCompression::lambda(unsigned int Quality)const{
     return ( Quality<50 ? 5000.0/Quality : 200.0-(2.0*Quality) );
 }
 /**
- * @brief return Quantification table value in [i][j]
+ * @brief return Quantification table value in [i][j] coordinates
  * 
  * @param i :lignes
  * @param j :colonnes
@@ -158,6 +158,8 @@ void cCompression::quant_JPEG(double(*DCT_Img)[Bloc8],int (*Img_Quant)[Bloc8]){
 }
 /**
  * @brief Dequantifying 
+ * @param Img_Quant : Quantified image
+ * @param DCT_Img : Dequantification result 
  * 
  */
 void cCompression::dequant_JPEG(int (*Img_Quant)[Bloc8],double(*DCT_Img)[Bloc8])const{
@@ -277,4 +279,8 @@ for(unsigned int i=1,j=0;i<Bloc8*Bloc8;i++){
         Trame[++j]=0;
     }
 }
+}
+
+void cCompression::RLE(int* Trame)const{
+    
 }

@@ -16,6 +16,7 @@ class cCompression{
 unsigned int mLargeur , mHauteur;
 char **mBuffer;
 unsigned int mQualite;
+
 //Different states for RLE 
 enum State{
     Strate_H,
@@ -24,6 +25,7 @@ enum State{
     UP,
     Exit
 };
+
 uint8_t RefTable[Bloc8][Bloc8]={{16,11 ,10 ,16 ,24 ,40, 51, 61},
                                 {12 ,12 ,14 ,19 ,26 ,58 ,60 ,55},
                                 {14 ,13 ,16 ,24 ,40 ,57 ,69 ,56},
@@ -59,6 +61,6 @@ public:
     double Taux_Compression(uint8_t (*Bloc8x8)[Bloc8],int (*Qimg)[Bloc8])const;
     
     void RLE_Block(int (*Qimg)[Bloc8],int DC_precedent ,int *Trame)const;
-    void RLE(char* Trame)const;
+    void RLE(int* Trame)const;
 
 };
