@@ -151,7 +151,7 @@ double cCompression::QTable(unsigned int i , unsigned j)const{
  * @param Img_DCT 
  * @param Img_Quant 
  */
-void cCompression::quant_JPEG(double(*DCT_Img)[Bloc8],int (*Img_Quant)[Bloc8]){
+void cCompression::quant_JPEG(double(*DCT_Img)[Bloc8],int (*Img_Quant)[Bloc8])const{
     for(unsigned int u=0 ; u<Bloc8 ;u++)
         for(unsigned int v=0 ; v<Bloc8 ;v++)
             *(*(Img_Quant+u)+v)=round((*(*(DCT_Img+u)+v))/QTable(u,v));
@@ -197,7 +197,7 @@ double cCompression::Taux_Compression(uint8_t (*Bloc8x8)[Bloc8],int (*Qimg)[Bloc
 }
 
 /**
- * @brief 
+ * @brief Apply state machine methode
  * 
  * @param Qimg : Quantified Image
  * @param DC_precedent  : Qimg[0] - Average previous Trame
@@ -255,32 +255,76 @@ switch(state){
 }
 t++;
 Trame[t]=Qimg[i][j];
-printf("state : %d\t i=%d\t j=%d\t t=%d\r\n",state,i,j,t);
+//printf("state : %d\t i=%d\t j=%d\t t=%d\r\n",state,i,j,t);
 }while(state!=Exit);
 
 }
-
-void cCompression::RLE_Block(int (*Qimg)[Bloc8],int DC_precedent ,int *Trame)const{
+/**
+ * @brief Caclulate the RLE Trame for one Bloc8X8
+ * @param Qimg : Quantified Block8x8
+ * @param DC_precedent  : Qimg[0] - Average previous Trame
+ * @param Trame : compressed (lossless) quantified Block8x8
+ */
+void cCompression::RLE_Block(int (*Qimg)[Bloc8],int DC_precedent ,int *Trame){
 unsigned int zeros=0;
-int tab[64];
-State_Machine_RLE(Qimg,DC_precedent,tab);
+int temp[64];
+State_Machine_RLE(Qimg,DC_precedent,temp);
 Trame[0]=DC_precedent;
+//Trame formatting
 for(unsigned int i=1,j=0;i<Bloc8*Bloc8;i++){
-    if(tab[i]==0){
+    if(temp[i]==0){
         zeros++;
     }
     else{
         Trame[++j]=zeros;
-        Trame[++j]=tab[i];
+        Trame[++j]=temp[i];
         zeros=0;
     }
-    if(tab[i]==0 && i==Bloc8*Bloc8-1){
+    if(temp[i]==0 && i==Bloc8*Bloc8-1){
         Trame[++j]=0;
         Trame[++j]=0;
+        TrameSize=j+1;
     }
 }
-}
 
-void cCompression::RLE(int* Trame)const{
-    
+}
+/**
+ * @brief Apply RLE for all image's blocks and Concatenate all the trames
+ * 
+ * @param CpltTrame : Complete Image's Trame
+ */
+void cCompression::RLE(int* CpltTrame){
+    int  Qimg[8][8];
+    double DCT_img[8][8] ;
+    int Trame[64];
+    uint8_t Bloc[8][8];
+    unsigned int offsetIndex=0;
+    for(unsigned int k =0;k<3;k++){
+        for(unsigned int i=0;i<Bloc8;i++){
+            for(unsigned j=0;j<Bloc8;j++){
+                Bloc[i][j]=TestImg[(j+i*Bloc8)+offsetIndex];
+                //printf("%u\t",Bloc[i][j]);
+            }
+        //printf("\n");
+        }
+        //printf("\r\n");
+        offsetIndex+=Bloc8*Bloc8;
+        Calcul_DCT_Block(Bloc,DCT_img);     
+        quant_JPEG(DCT_img,Qimg);
+        RLE_Block(Qimg,15,Trame);
+        TConcatenate(CpltTrame,Trame);
+    }
+}
+/**
+ * @brief Concatenate all 8x8 block's trames in a single complete image trame
+ * 
+ * @param CpltTrame : complete image trame
+ * @param Trame : 8x8 block trame
+ */
+void cCompression::TConcatenate(int* CpltTrame,int* Trame){
+    unsigned int lastSize=cpltTrameSize;
+    cpltTrameSize+=TrameSize;
+    for(uint8_t i =lastSize;i<cpltTrameSize;i++){
+        CpltTrame[i]=Trame[i-lastSize];
+    }
 }

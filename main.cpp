@@ -12,13 +12,17 @@ uint8_t Bloc[8][8] = {      {139,144,149,153,155,155,155,155},
                             {162,162,161,161,163,158,158,158}
                         };
 
-
 int  Qimg[8][8];
 double DCT_img[8][8] ;
 int Trame[64];
 cCompression test;
+test.RLE(Trame);
+for(int i=0;i<13*3;i++)
+    printf("%d\t",Trame[i]);
+printf("\n");
 
-//DCT
+
+/* //DCT
 test.Calcul_DCT_Block(Bloc,DCT_img);
 
 for (int i = 0; i < 8; i++) {
@@ -78,7 +82,9 @@ test.RLE_Block(Qimg,14,Trame);
 printf("Trame= [");
 for(int i=0;i<13;i++)
     printf("%d, ",Trame[i]);
-printf("]\n");
+printf("]\n"); */
+
+
 return 0;
 }
 

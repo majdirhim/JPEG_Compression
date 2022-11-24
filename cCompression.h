@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cmath>
-#include <cstdio>
 /**
  * @brief Bloc size
  * 
@@ -14,10 +13,39 @@ const int m = 8, n = 8;
 class cCompression{
 
 unsigned int mLargeur , mHauteur;
-char **mBuffer;
-unsigned int mQualite;
-
-//Different states for RLE 
+uint8_t *mBuffer;
+uint8_t TestImg[24*8] = {    139,144,149,153,155,155,155,155,
+                            144,151,153,156,159,156,156,156,
+                            150,155,160,163,158,156,156,156,
+                            159,161,162,160,160,159,159,159,
+                            159,160,161,162,162,155,155,155,
+                            161,161,161,161,160,157,157,157,
+                            162,162,161,163,162,157,157,157,
+                            162,162,161,161,163,158,158,158,
+                            139,144,149,153,155,155,155,155,
+                            144,151,153,156,159,156,156,156,
+                            150,155,160,163,158,156,156,156,
+                            159,161,162,160,160,159,159,159,
+                            159,160,161,162,162,155,155,155,
+                            161,161,161,161,160,157,157,157,
+                            162,162,161,163,162,157,157,157,
+                            162,162,161,161,163,158,158,158,
+                            139,144,149,153,155,155,155,155,
+                            144,151,153,156,159,156,156,156,
+                            150,155,160,163,158,156,156,156,
+                            159,161,162,160,160,159,159,159,
+                            159,160,161,162,162,155,155,155,
+                            161,161,161,161,160,157,157,157,
+                            162,162,161,163,162,157,157,157,
+                            162,162,161,161,163,158,158,158
+                        };
+unsigned int mQualite=50;
+unsigned int cpltTrameSize=0; // complete trame size
+unsigned int TrameSize=0; // single Block's trame size
+/**
+ * @brief Different states for RLE 
+ * 
+ */
 enum State{
     Strate_H,
     Down,
@@ -25,7 +53,10 @@ enum State{
     UP,
     Exit
 };
-
+/**
+ * @brief Reference table for jpeg quantification
+ * 
+ */
 uint8_t RefTable[Bloc8][Bloc8]={{16,11 ,10 ,16 ,24 ,40, 51, 61},
                                 {12 ,12 ,14 ,19 ,26 ,58 ,60 ,55},
                                 {14 ,13 ,16 ,24 ,40 ,57 ,69 ,56},
@@ -43,7 +74,6 @@ void State_Machine_RLE(int (*Qimg)[Bloc8],int DC_precedent,int *Trame)const;
 public:
     cCompression();
     ~cCompression();
-
     unsigned int get_mLargeur(void)const;
     unsigned int get_mHauteur(void)const;
     unsigned int get_mQualite(void)const;
@@ -54,13 +84,13 @@ public:
 
     void Calcul_DCT_Block(uint8_t (*Block8x8)[Bloc8],double(*DCT_Img)[Bloc8])const;
     void Calcul_iDCT(double(*DCT_Img)[Bloc8],uint8_t  (*Block8x8)[Bloc8])const;
-    void quant_JPEG(double(*DCT_Img)[Bloc8],int (*Img_Quant)[Bloc8]);
+    void quant_JPEG(double(*DCT_Img)[Bloc8],int (*Img_Quant)[Bloc8])const;
     void dequant_JPEG(int (*Img_Quant)[Bloc8],double(*DCT_Img)[Bloc8])const;
 
     double EQM(uint8_t (*Bloc8x8)[Bloc8],uint8_t (*IDCT)[Bloc8])const;
     double Taux_Compression(uint8_t (*Bloc8x8)[Bloc8],int (*Qimg)[Bloc8])const;
     
-    void RLE_Block(int (*Qimg)[Bloc8],int DC_precedent ,int *Trame)const;
-    void RLE(int* Trame)const;
-
+    void RLE_Block(int (*Qimg)[Bloc8],int DC_precedent ,int *Trame);
+    void RLE(int* CpltTrame);
+    void TConcatenate(int* CpltTrame,int* Trame);
 };
