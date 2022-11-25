@@ -3,8 +3,14 @@
  * @brief cCompresssion constructor
  * 
  */
-cCompression::cCompression(){
-
+cCompression::cCompression(const char *imagePath){
+    mBuffer=new uint8_t[mLargeur*mHauteur];
+    FILE *img;
+    img=fopen(imagePath,"r");
+    rewind(img); // Begining of the file 
+    for(int i=0;i<mLargeur*mHauteur;i++)
+        fscanf(img, "%u",&mBuffer[i]);
+    fclose(img);
 }
 /**
  * @brief cCompresssion deconstructor
@@ -39,6 +45,16 @@ unsigned int cCompression::get_mHauteur(void)const{
 unsigned int cCompression::get_mLargeur(void)const{
     return mLargeur;
 }
+
+/**
+ * @brief getter for complete Trame Size
+ * 
+ * @return unsigned int 
+ */
+unsigned int cCompression::get_cpltTrameSize()const{
+    return cpltTrameSize;
+}
+
 /**
  * @brief setter for mHauteur
  * 
@@ -268,6 +284,7 @@ Trame[t]=Qimg[i][j];
 void cCompression::RLE_Block(int (*Qimg)[Bloc8],int DC_precedent ,int *Trame){
 unsigned int zeros=0;
 int temp[64];
+TrameSize=0;
 State_Machine_RLE(Qimg,DC_precedent,temp);
 Trame[0]=DC_precedent;
 //Trame formatting
@@ -299,11 +316,13 @@ void cCompression::RLE(int* CpltTrame){
     int Trame[64];
     uint8_t Bloc[8][8];
     unsigned int offsetIndex=0;
-    for(unsigned int k =0;k<3;k++){
+    //(mLargeur*mHauteur)/(Bloc8*Bloc8)
+    for(unsigned int k =0;k<(mLargeur*mHauteur)/(Bloc8*Bloc8);k++){
+        /*Extracting 8x8 Block from the image*/   
         for(unsigned int i=0;i<Bloc8;i++){
             for(unsigned j=0;j<Bloc8;j++){
-                Bloc[i][j]=TestImg[(j+i*Bloc8)+offsetIndex];
-                //printf("%u\t",Bloc[i][j]);
+                Bloc[i][j]=mBuffer[(j+i*Bloc8)+offsetIndex]; //8x8 1D to 8x8 2D
+               // printf("%u\t",Bloc[i][j]);
             }
         //printf("\n");
         }
@@ -324,7 +343,8 @@ void cCompression::RLE(int* CpltTrame){
 void cCompression::TConcatenate(int* CpltTrame,int* Trame){
     unsigned int lastSize=cpltTrameSize;
     cpltTrameSize+=TrameSize;
-    for(uint8_t i =lastSize;i<cpltTrameSize;i++){
+    for(unsigned int i =lastSize;i<cpltTrameSize;i++){
         CpltTrame[i]=Trame[i-lastSize];
     }
 }
+

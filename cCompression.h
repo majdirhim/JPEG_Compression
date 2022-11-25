@@ -1,20 +1,21 @@
 #include <iostream>
+#include <cstdio>
 #include <cmath>
 /**
  * @brief Bloc size
  * 
  */
 #define Bloc8 8
-const int m = 8, n = 8;
+
 /**
  * @brief cCompression Class definition
  * 
  */
 class cCompression{
 
-unsigned int mLargeur , mHauteur;
+unsigned int mLargeur=128 , mHauteur=128;
 uint8_t *mBuffer;
-uint8_t TestImg[24*8] = {    139,144,149,153,155,155,155,155,
+uint8_t TestImg[24*8] = {   139,144,149,153,155,155,155,155,
                             144,151,153,156,159,156,156,156,
                             150,155,160,163,158,156,156,156,
                             159,161,162,160,160,159,159,159,
@@ -43,7 +44,7 @@ unsigned int mQualite=50;
 unsigned int cpltTrameSize=0; // complete trame size
 unsigned int TrameSize=0; // single Block's trame size
 /**
- * @brief Different states for RLE 
+ * @brief Different zigzag states for RLE 
  * 
  */
 enum State{
@@ -72,11 +73,12 @@ double lambda(unsigned int Quality)const;
 double QTable(unsigned int i , unsigned j)const;
 void State_Machine_RLE(int (*Qimg)[Bloc8],int DC_precedent,int *Trame)const;
 public:
-    cCompression();
+    cCompression(const char *filename);
     ~cCompression();
     unsigned int get_mLargeur(void)const;
     unsigned int get_mHauteur(void)const;
     unsigned int get_mQualite(void)const;
+    unsigned int get_cpltTrameSize()const;
 
     void set_mLargeur(unsigned int Lar );
     void set_mHauteur(unsigned int HAU);

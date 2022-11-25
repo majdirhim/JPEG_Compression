@@ -14,11 +14,12 @@ uint8_t Bloc[8][8] = {      {139,144,149,153,155,155,155,155},
 
 int  Qimg[8][8];
 double DCT_img[8][8] ;
-int Trame[64];
-cCompression test;
-test.RLE(Trame);
-for(int i=0;i<13*3;i++)
-    printf("%d\t",Trame[i]);
+int cpltTrame[128*128];
+cCompression test("lenna.txt");
+
+test.RLE(cpltTrame);
+for(int i=0;i<test.get_cpltTrameSize();i++)
+    printf("%d\t",cpltTrame[i]);
 printf("\n");
 
 
