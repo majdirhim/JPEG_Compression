@@ -1,3 +1,13 @@
+/**
+ * @file main.cpp
+ * @author Majdi Rhim
+ * @brief 
+ * @version 0.1
+ * @date 2022-11-29
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "cCompression.h"
 
 int main(){
@@ -18,9 +28,13 @@ int cpltTrame[128*128];
 cCompression test("lenna.txt");
 
 test.RLE(cpltTrame);
-for(int i=0;i<test.get_cpltTrameSize();i++)
+printf("\r\n");
+for(int i=0;i<test.get_cpltTrameSize();i++){
+    if(cpltTrame[i]==15)
+        printf("\r\n");
     printf("%d\t",cpltTrame[i]);
-printf("\n");
+}
+printf("\r\n");
 
 
 /* //DCT

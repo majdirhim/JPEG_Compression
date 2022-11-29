@@ -1,7 +1,18 @@
+/**
+ * @file cCompression.cpp
+ * @author Majdi Rhim
+ * @brief 
+ * @version 0.1
+ * @date 2022-11-29
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "cCompression.h"
 /**
- * @brief cCompresssion constructor
+ * @brief Construct a new c Compression::c Compression object
  * 
+ * @param imagePath : Path to the image to compress
  */
 cCompression::cCompression(const char *imagePath){
     mBuffer=new uint8_t[mLargeur*mHauteur];
@@ -20,7 +31,8 @@ cCompression::~cCompression(){
     
 }
 /**
- * @brief getter for mQualite
+ * @brief getter for mQualite : Compression quality \n 
+ * It is between 0 and 100, by default it is set to 50
  * 
  * @return unsigned int 
  */
@@ -58,32 +70,41 @@ unsigned int cCompression::get_cpltTrameSize()const{
 /**
  * @brief setter for mHauteur
  * 
- * @param Lar 
+ * @param HAU : height of the image
  */
 
-void cCompression::set_mHauteur(unsigned int Lar){
-     mHauteur=Lar;
+void cCompression::set_mHauteur(unsigned int HAU){
+     mHauteur=HAU;
 }
 /**
  * @brief setter for mLargeur
  * 
- * @param HAU 
+ * @param Lar : width of the image
  */
-void cCompression::set_mLargeur(unsigned int HAU){
-    mLargeur=HAU;
+void cCompression::set_mLargeur(unsigned int Lar){
+    mLargeur=Lar;
 }
-
+/**
+ * @brief Setter for mQuality :  Compression quality \n 
+ * It is between 0 and 100, by default it is set to 50
+ * 
+ * @param Q : Quality (0-100)
+ */
 void cCompression::set_mQualite(unsigned int Q){
+    /*checking for quality, it must be between 0 and 100*/
+    assert(Q>=0 && Q<=100); 
     mQualite=Q;
 }
 /**
  * @brief calculate the coefficient c(k)
  * 
- * @param u 
+ * @param u :value between 1--->7
  * @return double 
  */
 double cCompression::coeff(unsigned int u)const{
-    return u==0?(1.0/sqrt(2)):(u>=1 && u<=7);
+    /*checking if u is between 1 and 7*/
+    assert(u>=1 && u<=7);
+    return u==0?(1.0/sqrt(2)):1; /* return (1/sqrt(2)) if (u == 0) else return 1 */ 
 }
 
 /**
@@ -101,8 +122,8 @@ void cCompression::toSigned(uint8_t (*Block8x8)[Bloc8])const{
 /**
  * @brief Apply the Discrete cosine transform function to a block of image 8x8
  * 
- * @param DCT_Img : pointer
- * @param Block8x8 : pointer
+ * @param DCT_Img : pointer to array of double
+ * @param Block8x8 : pointer to array of uint8_t
  */
 
 void cCompression::Calcul_DCT_Block(uint8_t (*Block8x8)[Bloc8],double(*DCT_Img)[Bloc8])const{
@@ -117,13 +138,13 @@ void cCompression::Calcul_DCT_Block(uint8_t (*Block8x8)[Bloc8],double(*DCT_Img)[
             *(*(DCT_Img+u)+v)=(coeff(u)*coeff(v)/4.0)*s;
         }
     }      
-    toSigned(Block8x8);// return to 0-255
+    toSigned(Block8x8); /*rescaling to 0-255*/ 
 }
 /**
  * @brief Apply the inverse discrete cosine transform to a DCT encoded image 8x8
  * 
- * @param DCT_Img 
- * @param Block8x8 
+ * @param DCT_Img : pointer to array of double
+ * @param Block8x8 : pointer to array of uint8_t
  */
 
 void cCompression::Calcul_iDCT(double(*DCT_Img)[Bloc8],uint8_t  (*Block8x8)[Bloc8])const{
@@ -137,18 +158,23 @@ void cCompression::Calcul_iDCT(double(*DCT_Img)[Bloc8],uint8_t  (*Block8x8)[Bloc
             *(*(Block8x8+x)+y)=(uint8_t)lround(s/4.0); //Convert the double to nearest uint8_t value
         }
     }
-    toSigned(Block8x8); // return to 0-255
+    toSigned(Block8x8); /*rescaling to 0-255*/
 }
 
-
+/**
+ * @brief calculate lambda value
+ * 
+ * @param Quality : quality between 0-100
+ * @return double 
+ */
 double cCompression::lambda(unsigned int Quality)const{
     return ( Quality<50 ? 5000.0/Quality : 200.0-(2.0*Quality) );
 }
 /**
- * @brief return Quantification table value in [i][j] coordinates
+ * @brief return Quantification table value in each [i][j] coordinates
  * 
- * @param i :lignes
- * @param j :colonnes
+ * @param i :row index
+ * @param j :column index
  * @return double 
  */
 double cCompression::QTable(unsigned int i , unsigned j)const{
@@ -164,8 +190,8 @@ double cCompression::QTable(unsigned int i , unsigned j)const{
 /**
  * @brief Quantify a matrix depending on Fq factor and a reference table
  * 
- * @param Img_DCT 
- * @param Img_Quant 
+ * @param Img_DCT : pointer to array of double
+ * @param Img_Quant : pointer to array of int
  */
 void cCompression::quant_JPEG(double(*DCT_Img)[Bloc8],int (*Img_Quant)[Bloc8])const{
     for(unsigned int u=0 ; u<Bloc8 ;u++)
@@ -173,7 +199,7 @@ void cCompression::quant_JPEG(double(*DCT_Img)[Bloc8],int (*Img_Quant)[Bloc8])co
             *(*(Img_Quant+u)+v)=round((*(*(DCT_Img+u)+v))/QTable(u,v));
 }
 /**
- * @brief Dequantifying 
+ * @brief Dequantifying a JPEG image
  * @param Img_Quant : Quantified image
  * @param DCT_Img : Dequantification result 
  * 
@@ -185,7 +211,7 @@ for(unsigned int u=0 ; u<Bloc8 ;u++)
 }
 
 /**
- * @brief root mean square deviation
+ * @brief Determine the root mean square deviation 
  * 
  */
 double cCompression::EQM(uint8_t (*Bloc8x8)[Bloc8],uint8_t (*IDCT)[Bloc8])const{
@@ -197,9 +223,10 @@ return(somme/(Bloc8*Bloc8));
 }
 
 /**
- * @brief Compression Ratio (%)
- * 
- * @return double 
+ * @brief Determine the compression ratio (%)
+ * @param Bloc8x8 : pointer to array of uint8_t
+ * @param Img_Quant : pointer to array of int
+ * @return double : (%)
  */
 double cCompression::Taux_Compression(uint8_t (*Bloc8x8)[Bloc8],int (*Qimg)[Bloc8])const{
     uint8_t zeros=0, elements=64;
@@ -213,16 +240,16 @@ double cCompression::Taux_Compression(uint8_t (*Bloc8x8)[Bloc8],int (*Qimg)[Bloc
 }
 
 /**
- * @brief Apply state machine methode
+ * @brief Apply a state machine to iterate between elements in ZigZag
  * 
  * @param Qimg : Quantified Image
  * @param DC_precedent  : Qimg[0] - Average previous Trame
- * @param Trame : compressed (lossless) quantified Image
+ * @param Trame : compressed (lossless) quantified Image (output)
  */
 void cCompression::State_Machine_RLE(int (*Qimg)[Bloc8],int DC_precedent,int *Trame)const{
 unsigned int i =0 , j=0 , t=0;
 State state=Strate_H;
-Trame[0]=Qimg[i][j];
+Trame[0]=Qimg[i][j]; // Trame[0]=Qimg[0][0]
 do{
 switch(state){
     case Strate_H:
@@ -269,9 +296,9 @@ switch(state){
         state=Exit;
 
 }
-t++;
+t++; //increment
 Trame[t]=Qimg[i][j];
-//printf("state : %d\t i=%d\t j=%d\t t=%d\r\n",state,i,j,t);
+//printf("state : %d\t i=%d\t j=%d\t t=%d\r\n",state,i,j,t); /*debug*/
 }while(state!=Exit);
 
 }
@@ -283,7 +310,7 @@ Trame[t]=Qimg[i][j];
  */
 void cCompression::RLE_Block(int (*Qimg)[Bloc8],int DC_precedent ,int *Trame){
 unsigned int zeros=0;
-int temp[64];
+int temp[64]; /*temporary array*/
 TrameSize=0;
 State_Machine_RLE(Qimg,DC_precedent,temp);
 Trame[0]=DC_precedent;

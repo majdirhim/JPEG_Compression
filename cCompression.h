@@ -1,4 +1,15 @@
+/**
+ * @file cCompression.h
+ * @author Majdi Rhim
+ * @brief 
+ * @version 0.1
+ * @date 2022-11-29
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include <iostream>
+#include <cassert>
 #include <cstdio>
 #include <cmath>
 /**
@@ -43,6 +54,7 @@ uint8_t TestImg[24*8] = {   139,144,149,153,155,155,155,155,
 unsigned int mQualite=50;
 unsigned int cpltTrameSize=0; // complete trame size
 unsigned int TrameSize=0; // single Block's trame size
+
 /**
  * @brief Different zigzag states for RLE 
  * 
