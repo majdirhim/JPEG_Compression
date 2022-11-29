@@ -103,8 +103,8 @@ void cCompression::set_mQualite(unsigned int Q){
  */
 double cCompression::coeff(unsigned int u)const{
     /*checking if u is between 1 and 7*/
-    assert(u>=1 && u<=7);
-    return u==0?(1.0/sqrt(2)):1; /* return (1/sqrt(2)) if (u == 0) else return 1 */ 
+    assert(u>=0 && u<=7);
+    return u==0?(1.0/sqrt(2)):(u>=1 && u<=7); /* return (1/sqrt(2)) if (u == 0) else return 1 */ 
 }
 
 /**
