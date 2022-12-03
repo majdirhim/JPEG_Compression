@@ -52,9 +52,10 @@ uint8_t TestImg[24*8] = {   139,144,149,153,155,155,155,155,
                             162,162,161,161,163,158,158,158
                         };
 unsigned int mQualite=50;
-unsigned int cpltTrameSize=0; // complete trame size
-unsigned int TrameSize=0; // single Block's trame size
-
+unsigned int cpltTrameSize=0; /*Complete trame size*/
+unsigned int TrameSize=0; /*Single Block's trame size*/ 
+float Trame_average=0; /*Average of Current Trame*/ 
+int m_DC_precedent=0; /* Average previous Trame*/
 /**
  * @brief Different zigzag states for RLE 
  * 
@@ -83,7 +84,7 @@ double coeff(unsigned int u)const;
 void toSigned(uint8_t (*Block8x8)[Bloc8])const;
 double lambda(unsigned int Quality)const;
 double QTable(unsigned int i , unsigned j)const;
-void State_Machine_RLE(int (*Qimg)[Bloc8],int DC_precedent,int *Trame)const;
+void State_Machine_RLE(int (*Qimg)[Bloc8],int *Trame);
 public:
     cCompression(const char *filename);
     ~cCompression();

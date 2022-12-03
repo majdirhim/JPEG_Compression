@@ -30,8 +30,6 @@ cCompression test("lenna.txt");
 test.RLE(cpltTrame);
 printf("\r\n");
 for(int i=0;i<test.get_cpltTrameSize();i++){
-    if(cpltTrame[i]==15)
-        printf("\r\n");
     printf("%d\t",cpltTrame[i]);
 }
 printf("\r\n");

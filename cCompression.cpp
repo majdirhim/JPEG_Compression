@@ -243,10 +243,9 @@ double cCompression::Taux_Compression(uint8_t (*Bloc8x8)[Bloc8],int (*Qimg)[Bloc
  * @brief Apply a state machine to iterate between elements in ZigZag
  * 
  * @param Qimg : Quantified Image
- * @param DC_precedent  : Qimg[0] - Average previous Trame
  * @param Trame : compressed (lossless) quantified Image (output)
  */
-void cCompression::State_Machine_RLE(int (*Qimg)[Bloc8],int DC_precedent,int *Trame)const{
+void cCompression::State_Machine_RLE(int (*Qimg)[Bloc8],int *Trame){
 unsigned int i =0 , j=0 , t=0;
 State state=Strate_H;
 Trame[0]=Qimg[i][j]; // Trame[0]=Qimg[0][0]
@@ -298,23 +297,24 @@ switch(state){
 }
 t++; //increment
 Trame[t]=Qimg[i][j];
+Trame_average+=Trame[t]; /*somme of the trame's values*/ 
 //printf("state : %d\t i=%d\t j=%d\t t=%d\r\n",state,i,j,t); /*debug*/
 }while(state!=Exit);
-
 }
 /**
  * @brief Caclulate the RLE Trame for one Bloc8X8
  * @param Qimg : Quantified Block8x8
- * @param DC_precedent  : Qimg[0] - Average previous Trame
+ * @param DC_precedent  : Average previous Trame
  * @param Trame : compressed (lossless) quantified Block8x8
  */
 void cCompression::RLE_Block(int (*Qimg)[Bloc8],int DC_precedent ,int *Trame){
 unsigned int zeros=0;
-int temp[64]; /*temporary array*/
+int temp[64]; //temporary array
 TrameSize=0;
-State_Machine_RLE(Qimg,DC_precedent,temp);
-Trame[0]=DC_precedent;
-//Trame formatting
+Trame_average=0.0;  //reinitialize for the next trame calculation      
+State_Machine_RLE(Qimg,temp);
+Trame[0]=temp[0]-DC_precedent; //Qimg[0] - Average previous Trame
+/*Trame formatting*/
 for(unsigned int i=1,j=0;i<Bloc8*Bloc8;i++){
     if(temp[i]==0){
         zeros++;
@@ -328,9 +328,10 @@ for(unsigned int i=1,j=0;i<Bloc8*Bloc8;i++){
         Trame[++j]=0;
         Trame[++j]=0;
         TrameSize=j+1;
+        m_DC_precedent=(Trame_average/TrameSize); /*Determine the average */
+       // printf("average :%d\n\r",(int)m_DC_precedent);
     }
 }
-
 }
 /**
  * @brief Apply RLE for all image's blocks and Concatenate all the trames
@@ -357,7 +358,7 @@ void cCompression::RLE(int* CpltTrame){
         offsetIndex+=Bloc8*Bloc8;
         Calcul_DCT_Block(Bloc,DCT_img);     
         quant_JPEG(DCT_img,Qimg);
-        RLE_Block(Qimg,15,Trame);
+        RLE_Block(Qimg,m_DC_precedent,Trame);
         TConcatenate(CpltTrame,Trame);
     }
 }
