@@ -1,13 +1,15 @@
 /**
  * @file cCompression.h
  * @author Majdi Rhim
- * @brief 
+ * @brief This class Handles image reading and all JPEG's operation such as the DCT , the inverse DCT, the quantifiaction, the inverse quantification and also \n 
+ * it handles the Run-length encoding for 128*128 image.  
  * @version 0.1
  * @date 2022-11-29
  * 
  * @copyright Copyright (c) 2022
  * 
  */
+#pragma once
 #include <iostream>
 #include <cassert>
 #include <cstdio>
@@ -17,6 +19,20 @@
  * 
  */
 #define Bloc8 8
+
+/**
+ * @brief Reference table for jpeg quantification
+ * 
+ */
+const uint8_t RefTable[Bloc8][Bloc8]={{16,11 ,10 ,16 ,24 ,40, 51, 61},
+                                {12 ,12 ,14 ,19 ,26 ,58 ,60 ,55},
+                                {14 ,13 ,16 ,24 ,40 ,57 ,69 ,56},
+                                {14 ,17 ,22 ,29 ,51 ,87 ,80 ,62},
+                                {18 ,22 ,37 ,56 ,68 ,109 ,103 ,77},
+                                {24 ,35 ,55 ,64 ,81 ,104 ,113 ,92},
+                                {49 ,64 ,78 ,87 ,103 ,121 ,120 ,101},
+                                {72 ,92 ,95 ,98 ,112 ,100 ,103 ,99}
+                                };
 
 /**
  * @brief cCompression Class definition
@@ -67,19 +83,7 @@ enum State{
     UP,
     Exit
 };
-/**
- * @brief Reference table for jpeg quantification
- * 
- */
-uint8_t RefTable[Bloc8][Bloc8]={{16,11 ,10 ,16 ,24 ,40, 51, 61},
-                                {12 ,12 ,14 ,19 ,26 ,58 ,60 ,55},
-                                {14 ,13 ,16 ,24 ,40 ,57 ,69 ,56},
-                                {14 ,17 ,22 ,29 ,51 ,87 ,80 ,62},
-                                {18 ,22 ,37 ,56 ,68 ,109 ,103 ,77},
-                                {24 ,35 ,55 ,64 ,81 ,104 ,113 ,92},
-                                {49 ,64 ,78 ,87 ,103 ,121 ,120 ,101},
-                                {72 ,92 ,95 ,98 ,112 ,100 ,103 ,99}
-                                };
+
 double coeff(unsigned int u)const;
 void toSigned(uint8_t (*Block8x8)[Bloc8])const;
 double lambda(unsigned int Quality)const;
