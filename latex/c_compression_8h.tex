@@ -1,0 +1,86 @@
+\hypertarget{c_compression_8h}{}\doxysection{D\+:/\+JPEG\+\_\+\+Compression/c\+Compression.h File Reference}
+\label{c_compression_8h}\index{D:/JPEG\_Compression/cCompression.h@{D:/JPEG\_Compression/cCompression.h}}
+
+
+This class Handles image reading and all JPEG\textquotesingle{}s operation such as the DCT , the inverse DCT, the quantifiaction, the inverse quantification and also ~\newline
+ it handles the Run-\/length encoding for 128$\ast$128 image. ~\newline
+  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$cassert$>$}\newline
+{\ttfamily \#include $<$cstdio$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classc_compression}{c\+Compression}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classc_compression}{c\+Compression}} Class definition \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{c_compression_8h_af9ac23677658709b2a12767226908688}{Bloc8}}~8
+\begin{DoxyCompactList}\small\item\em Bloc size. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const uint8\+\_\+t \mbox{\hyperlink{c_compression_8h_a967d3742d4cac7911e181d4caf7bd816}{Ref\+Table}} \mbox{[}\mbox{\hyperlink{c_compression_8h_af9ac23677658709b2a12767226908688}{Bloc8}}\mbox{]}\mbox{[}\mbox{\hyperlink{c_compression_8h_af9ac23677658709b2a12767226908688}{Bloc8}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em Reference table for jpeg quantification. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class Handles image reading and all JPEG\textquotesingle{}s operation such as the DCT , the inverse DCT, the quantifiaction, the inverse quantification and also ~\newline
+ it handles the Run-\/length encoding for 128$\ast$128 image. ~\newline
+ 
+
+\begin{DoxyAuthor}{Author}
+Majdi Rhim 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2022-\/11-\/29
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2022 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{c_compression_8h_af9ac23677658709b2a12767226908688}\label{c_compression_8h_af9ac23677658709b2a12767226908688}} 
+\index{cCompression.h@{cCompression.h}!Bloc8@{Bloc8}}
+\index{Bloc8@{Bloc8}!cCompression.h@{cCompression.h}}
+\doxysubsubsection{\texorpdfstring{Bloc8}{Bloc8}}
+{\footnotesize\ttfamily \#define Bloc8~8}
+
+
+
+Bloc size. 
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{c_compression_8h_a967d3742d4cac7911e181d4caf7bd816}\label{c_compression_8h_a967d3742d4cac7911e181d4caf7bd816}} 
+\index{cCompression.h@{cCompression.h}!RefTable@{RefTable}}
+\index{RefTable@{RefTable}!cCompression.h@{cCompression.h}}
+\doxysubsubsection{\texorpdfstring{RefTable}{RefTable}}
+{\footnotesize\ttfamily const uint8\+\_\+t Ref\+Table\mbox{[}\mbox{\hyperlink{c_compression_8h_af9ac23677658709b2a12767226908688}{Bloc8}}\mbox{]}\mbox{[}\mbox{\hyperlink{c_compression_8h_af9ac23677658709b2a12767226908688}{Bloc8}}\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\{\{16,11 ,10 ,16 ,24 ,40, 51, 61\},}
+\DoxyCodeLine{                                \{12 ,12 ,14 ,19 ,26 ,58 ,60 ,55\},}
+\DoxyCodeLine{                                \{14 ,13 ,16 ,24 ,40 ,57 ,69 ,56\},}
+\DoxyCodeLine{                                \{14 ,17 ,22 ,29 ,51 ,87 ,80 ,62\},}
+\DoxyCodeLine{                                \{18 ,22 ,37 ,56 ,68 ,109 ,103 ,77\},}
+\DoxyCodeLine{                                \{24 ,35 ,55 ,64 ,81 ,104 ,113 ,92\},}
+\DoxyCodeLine{                                \{49 ,64 ,78 ,87 ,103 ,121 ,120 ,101\},}
+\DoxyCodeLine{                                \{72 ,92 ,95 ,98 ,112 ,100 ,103 ,99\}}
+\DoxyCodeLine{                                \}}
+
+\end{DoxyCode}
+
+
+Reference table for jpeg quantification. 
+
