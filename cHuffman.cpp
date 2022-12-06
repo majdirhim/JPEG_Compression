@@ -1,4 +1,44 @@
 #include "cHuffman.h"
+
+/**
+ * @brief Construct a new cHuffman::cHuffman object
+ * 
+ */
+cHuffman::cHuffman(){
+
+}
+/**
+ * @brief Destroy the cHuffman::cHuffman object
+ * 
+ */
+cHuffman::~cHuffman(){
+
+}
+/**
+ * @brief Getter for mTrame
+ * 
+ * @return int* 
+ */
+int* cHuffman::getTrame()const{
+    return mTrame;
+}
+/**
+ * @brief Getter for mLongueur
+ * 
+ * @return uint8_t 
+ */
+uint8_t cHuffman::getLongueur()const{
+    return mLongueur;
+}
+/**
+ * @brief Getter for mRacine
+ * 
+ * @return sNoeud* 
+ */
+sNoeud* cHuffman::getRacine()const{
+    return mRacine;
+}
+
 /**
  * @brief Create the Huffman Tree
  * 

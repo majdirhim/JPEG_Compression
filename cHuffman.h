@@ -36,15 +36,15 @@ class cHuffman{
 
     void AfficherHuffman(sNoeud* Racine)const;
 public:
-/*cHuffman();
+cHuffman();
 ~cHuffman();
 int* getTrame()const;
 uint8_t getLongueur()const;
-int* getRacine()const;
+sNoeud* getRacine()const;
 
 void setTrame();
 void setLongueur();
-void setRacine();*/
+void setRacine();
 
 
 void HuffmanCodes(char* Donnee ,unsigned int* Frequence ,unsigned int Taille );
