@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 /**
  * @file cHuffman.h
  * @author Majdi
@@ -52,4 +50,3 @@ void setRacine();
 void HuffmanCodes(char* Donnee ,unsigned int* Frequence ,unsigned int Taille );
 void AfficherHuffman()const;
 };
->>>>>>> cHuffman

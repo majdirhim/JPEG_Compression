@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 #include "cHuffman.h"
 
 /**
@@ -86,4 +84,3 @@ void cHuffman::AfficherHuffman(sNoeud* Racine)const{
         AfficherHuffman(Racine->mgauche);
     }
 }
->>>>>>> cHuffman
