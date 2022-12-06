@@ -14,6 +14,7 @@
 #include <cassert>
 #include <cstdio>
 #include <cmath>
+#include <queue>
 /**
  * @brief Bloc size
  * 
@@ -72,6 +73,7 @@ unsigned int cpltTrameSize=0; /*Complete trame size*/
 unsigned int TrameSize=0; /*Single Block's trame size*/ 
 float Trame_average=0; /*Average of Current Trame*/ 
 int m_DC_precedent=0; /* Average previous Trame*/
+unsigned int HistoSize=0; /*Histogram tables size*/
 /**
  * @brief Different zigzag states for RLE 
  * 
@@ -96,7 +98,7 @@ public:
     unsigned int get_mHauteur(void)const;
     unsigned int get_mQualite(void)const;
     unsigned int get_cpltTrameSize()const;
-
+    unsigned int get_HistoSize()const;
     void set_mLargeur(unsigned int Lar );
     void set_mHauteur(unsigned int HAU);
     void set_mQualite(unsigned int Q);
@@ -112,4 +114,6 @@ public:
     void RLE_Block(int (*Qimg)[Bloc8],int DC_precedent ,int *Trame);
     void RLE(int* CpltTrame);
     void TConcatenate(int* CpltTrame,int* Trame);
+
+    void Histogramme(int* Trame, unsigned int Longueur_Trame, int* Donnee , unsigned int* Frequence);
 };

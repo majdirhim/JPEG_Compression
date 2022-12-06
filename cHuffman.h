@@ -12,7 +12,7 @@
 #include "cCompression.h"
 #include <queue>
 struct sNoeud {
-char mdonnee ; // code
+int mdonnee ; // code
 unsigned int mfreq ; // frequence du code
 sNoeud *mgauche ; // fils gauche
 sNoeud *mdroit ; // fils droit
@@ -34,7 +34,7 @@ class cHuffman{
     uint8_t mLongueur;
     sNoeud *mRacine;
 
-    void AfficherHuffman(sNoeud* Racine)const;
+    void AfficherHuffman(sNoeud* Racine,std::string code)const;
 public:
 cHuffman();
 ~cHuffman();
@@ -47,6 +47,6 @@ void setLongueur();
 void setRacine();
 
 
-void HuffmanCodes(char* Donnee ,unsigned int* Frequence ,unsigned int Taille );
+void HuffmanCodes(int* Donnee ,unsigned int* Frequence ,unsigned int Taille );
 void AfficherHuffman()const;
 };

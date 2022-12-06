@@ -66,7 +66,14 @@ unsigned int cCompression::get_mLargeur(void)const{
 unsigned int cCompression::get_cpltTrameSize()const{
     return cpltTrameSize;
 }
-
+/**
+ * @brief Getter for HistoSize
+ * 
+ * @return unsigned int 
+ */
+unsigned int cCompression::get_HistoSize()const{
+    return HistoSize;
+}
 /**
  * @brief setter for mHauteur
  * 
@@ -373,6 +380,34 @@ void cCompression::TConcatenate(int* CpltTrame,int* Trame){
     cpltTrameSize+=TrameSize;
     for(unsigned int i =lastSize;i<cpltTrameSize;i++){
         CpltTrame[i]=Trame[i-lastSize];
+    }
+}
+/**
+ * @brief returns the data table and it's corresponding frequency table 
+ * 
+ * @param Trame : RLE Trame
+ * @param Longueur_Trame : Size of RLE Trame
+ * @param Donnee : pointer to the data table to return 
+ * @param Frequence : pointer to the frequency table to return
+ */
+void cCompression::Histogramme(int* Trame, unsigned int Longueur_Trame, int* Donnee , unsigned int* Frequence){
+    std::priority_queue<int, std::vector<int>, std::greater<int> > Q;
+    int temp,extemp;
+    unsigned int Freq=0;
+    for(unsigned int i=0;i<Longueur_Trame;i++)
+        Q.push(Trame[i]);
+    while(!Q.empty()){
+        temp=Q.top();
+        Q.pop();
+        do{
+            Donnee[HistoSize]=temp;
+            Freq++;
+            Frequence[HistoSize]=Freq;
+            extemp = Q.top();
+            Q.pop();
+        }while(temp==extemp);
+        HistoSize++;
+        Freq=0;
     }
 }
 
