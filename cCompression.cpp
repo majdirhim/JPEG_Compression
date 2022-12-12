@@ -351,13 +351,12 @@ void cCompression::RLE(int* CpltTrame){
     int Trame[64];
     uint8_t Bloc[8][8];
     unsigned int offsetIndex=0;
-    //(mLargeur*mHauteur)/(Bloc8*Bloc8)
     for(unsigned int k =0;k<(mLargeur*mHauteur)/(Bloc8*Bloc8);k++){
         /*Extracting 8x8 Block from the image*/   
         for(unsigned int i=0;i<Bloc8;i++){
             for(unsigned j=0;j<Bloc8;j++){
                 Bloc[i][j]=mBuffer[(j+i*Bloc8)+offsetIndex]; //8x8 1D to 8x8 2D
-               // printf("%u\t",Bloc[i][j]);
+               // printf("%u\t",Bloc[i][j]); //debug
             }
         //printf("\n");
         }
@@ -383,7 +382,7 @@ void cCompression::TConcatenate(int* CpltTrame,int* Trame){
     }
 }
 /**
- * @brief returns the data table and it's corresponding frequency table 
+ * @brief Returns the data table and it's corresponding frequency table 
  * 
  * @param Trame : RLE Trame
  * @param Longueur_Trame : Size of RLE Trame
@@ -411,3 +410,12 @@ void cCompression::Histogramme(int* Trame, unsigned int Longueur_Trame, int* Don
     }
 }
 
+/**
+ * @brief 
+ * 
+ * @param Trame : pointer to the complete image Trame
+ * @param filename : file name by default it's set to Flow.txt
+ */
+void cCompression::Ecriture_Flot(const int* Trame, const char* filename){
+    
+}

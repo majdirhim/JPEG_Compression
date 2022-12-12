@@ -15,11 +15,8 @@
 #include <cstdio>
 #include <cmath>
 #include <queue>
-/**
- * @brief Bloc size
- * 
- */
-#define Bloc8 8
+
+#define Bloc8 8 /*Single Bloc size*/
 
 /**
  * @brief Reference table for jpeg quantification
@@ -41,41 +38,17 @@ const uint8_t RefTable[Bloc8][Bloc8]={{16,11 ,10 ,16 ,24 ,40, 51, 61},
  */
 class cCompression{
 
-unsigned int mLargeur=128 , mHauteur=128;
-uint8_t *mBuffer;
-uint8_t TestImg[24*8] = {   139,144,149,153,155,155,155,155,
-                            144,151,153,156,159,156,156,156,
-                            150,155,160,163,158,156,156,156,
-                            159,161,162,160,160,159,159,159,
-                            159,160,161,162,162,155,155,155,
-                            161,161,161,161,160,157,157,157,
-                            162,162,161,163,162,157,157,157,
-                            162,162,161,161,163,158,158,158,
-                            139,144,149,153,155,155,155,155,
-                            144,151,153,156,159,156,156,156,
-                            150,155,160,163,158,156,156,156,
-                            159,161,162,160,160,159,159,159,
-                            159,160,161,162,162,155,155,155,
-                            161,161,161,161,160,157,157,157,
-                            162,162,161,163,162,157,157,157,
-                            162,162,161,161,163,158,158,158,
-                            139,144,149,153,155,155,155,155,
-                            144,151,153,156,159,156,156,156,
-                            150,155,160,163,158,156,156,156,
-                            159,161,162,160,160,159,159,159,
-                            159,160,161,162,162,155,155,155,
-                            161,161,161,161,160,157,157,157,
-                            162,162,161,163,162,157,157,157,
-                            162,162,161,161,163,158,158,158
-                        };
+unsigned int mLargeur=128 , mHauteur=128;/*Image Resolution*/
+uint8_t *mBuffer; /*Image buffer*/
 unsigned int mQualite=50;
 unsigned int cpltTrameSize=0; /*Complete trame size*/
-unsigned int TrameSize=0; /*Single Block's trame size*/ 
-float Trame_average=0; /*Average of Current Trame*/ 
+unsigned int TrameSize=0; /*Single Bloc's trame size*/ 
+float Trame_average=0; /*Average Current Trame*/ 
 int m_DC_precedent=0; /* Average previous Trame*/
 unsigned int HistoSize=0; /*Histogram tables size*/
+
 /**
- * @brief Different zigzag states for RLE 
+ * @note Different zigzag states for RLE 
  * 
  */
 enum State{
@@ -116,4 +89,6 @@ public:
     void TConcatenate(int* CpltTrame,int* Trame);
 
     void Histogramme(int* Trame, unsigned int Longueur_Trame, int* Donnee , unsigned int* Frequence);
+
+    void Ecriture_Flot(const int* Trame, const char* filename="Flow.txt");
 };
