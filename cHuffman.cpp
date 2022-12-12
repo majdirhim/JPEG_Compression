@@ -4,16 +4,24 @@
  * @brief Construct a new cHuffman::cHuffman object
  * 
  */
-cHuffman::cHuffman(){
-
+cHuffman::cHuffman(const int* Trame,const unsigned int* Frequence,const unsigned int& Longueur){
+    assert(Longueur>0); /*must not be null*/
+    mLongueur=Longueur;
+    mFrequence=new unsigned int[Longueur];
+    mTrame=new int[Longueur];
+    for(unsigned int i=0;i<mLongueur;i++){
+        mFrequence[i]=Frequence[i];
+        mTrame[i]=Trame[i];
+    }
 }
 /**
  * @brief Destroy the cHuffman::cHuffman object
  * 
  */
 cHuffman::~cHuffman(){
-
-}
+delete[] mFrequence;
+delete[] mTrame;
+} 
 /**
  * @brief Getter for mTrame
  * 
@@ -27,7 +35,7 @@ int* cHuffman::getTrame()const{
  * 
  * @return uint8_t 
  */
-uint8_t cHuffman::getLongueur()const{
+unsigned int cHuffman::getLongueur()const{
     return mLongueur;
 }
 /**
@@ -40,50 +48,81 @@ sNoeud* cHuffman::getRacine()const{
 }
 
 /**
- * @brief Create the Huffman Tree
+ * @brief Private function to Create the Huffman Tree
  * 
- * @param Donnee :array of data
- * @param Frequence :array of data frequency occurence
+ * @param Donnee :pointer to array of data
+ * @param Frequence :pointer array of data frequency occurence
  * @param Taille : size of arrays
  */
-void cHuffman::HuffmanCodes(int* Donnee ,unsigned int* Frequence ,unsigned int Taille ){
+void cHuffman::HuffmanCodes(){
     std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare> Q;
-    for(unsigned int i =0;i<Taille;i++)
-        Q.push(new sNoeud(Donnee[i],Frequence[i]));
-    uint8_t t=0;
+    for(unsigned int i =0;i<mLongueur;i++)
+        Q.push(new sNoeud(mTrame[i],mFrequence[i]));
     while(Q.size()!=1){
         sNoeud* gauche = Q.top();
         Q.pop();
         sNoeud* droit = Q.top();
         Q.pop();
-        sNoeud* top =new sNoeud('\0',gauche->mfreq+droit->mfreq);
+        sNoeud* top =new sNoeud('~',gauche->mfreq+droit->mfreq);
         top->mdroit=droit;
         top->mgauche=gauche;
-        //printf("data = %c \t freq=%d\n\r",top->mdonnee,top->mfreq);
+        //printf("data = %c \t freq=%d\n\r",top->mdonnee,top->mfreq); //debug
         Q.push(top);
     }
-    mRacine=Q.top();
+    mRacine=Q.top(); //root node
     Q.pop();
 }
 /**
- * @brief Public Function to print Huffman Tree
+ * @brief Public function to Generate the Huffman codes for each node and print the Tree
  * 
  */
-void cHuffman::AfficherHuffman()const{
-    AfficherHuffman(this->mRacine,"");
+void cHuffman::Generatecodes(){
+    Generatecodes(this->mRacine);
 }
 
 
 /**
- * @brief Private function to print Huffman Tree
+ * @brief Private function to Generate Huffman codes for each node and print the Tree
  * 
- * @param Racine : First node in huffman tree
+ * @param Racine : root node address
+ * @param code : node code, by default it's set to ""
  */
-void cHuffman::AfficherHuffman(sNoeud* Racine , std::string code)const{
-    if(Racine!=nullptr){
-        if(Racine->mdonnee!='\0')
-            printf("Data= %d\t\tcode=%s\t\r\n",Racine->mdonnee,code.c_str());
-        AfficherHuffman(Racine->mdroit,code+"1");
-        AfficherHuffman(Racine->mgauche,code+"0");
+void cHuffman::Generatecodes( sNoeud* Racine , std::string code){
+    if(Racine!=NULL){
+        Racine->mcode=code; //store codes in each node
+        Generatecodes(Racine->mgauche,code+"0");
+        Generatecodes(Racine->mdroit,code+"1");
+        if(Racine->mdonnee!='~'){
+            /**Print the Tree*/
+            printf("Data= %d\tcode=%s\r\n",Racine->mdonnee,Racine->mcode.c_str());
+        }
     }
 }
+
+
+/**
+ * @brief Decodes the given encoded string and store the result in a file
+ * 
+ * @param input : encoded string
+ * @param file_name : file name by debault it's set to Decoded.txt
+ */
+void cHuffman::decode(const std::string& input,const char* file_name )const{
+  FILE* file;
+  file=fopen(file_name,"w");
+
+  sNoeud* node=this->mRacine;
+  for(unsigned int i = 0;i<input.size();i++){
+    if(input[i]=='0'){
+      node=node->mgauche;
+    }
+    else if (input[i]=='1')
+      node=node->mdroit;
+    if(node->mgauche == NULL && node->mdroit == NULL){
+      printf("%d\n\r",node->mdonnee);
+      fprintf(file,"%d",node->mdonnee);
+      node=this->mRacine;
+    }
+  }
+  fclose(file);
+}
+

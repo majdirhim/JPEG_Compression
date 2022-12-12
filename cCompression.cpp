@@ -19,8 +19,8 @@ cCompression::cCompression(const char *imagePath){
     FILE *img;
     img=fopen(imagePath,"r");
     rewind(img); // Begining of the file 
-    for(int i=0;i<mLargeur*mHauteur;i++)
-        fscanf(img, "%u",&mBuffer[i]);
+    for(unsigned int i=0;i<mLargeur*mHauteur;i++)
+        fscanf(img, "%hhu",&mBuffer[i]);
     fclose(img);
 }
 /**
@@ -222,7 +222,7 @@ for(unsigned int u=0 ; u<Bloc8 ;u++)
  * 
  */
 double cCompression::EQM(uint8_t (*Bloc8x8)[Bloc8],uint8_t (*IDCT)[Bloc8])const{
-    double Ecart =0 , somme=0.0;
+    double somme=0.0;
     for(unsigned int u=0 ; u<Bloc8 ;u++)
         for(unsigned int v=0 ; v<Bloc8 ;v++)
             somme+=((*(*(Bloc8x8+u)+v))-(*(*(IDCT+u)+v)))*((*(*(Bloc8x8+u)+v))-(*(*(IDCT+u)+v)));            

@@ -11,11 +11,13 @@
 #pragma once
 #include "cCompression.h"
 #include <queue>
+#include <string>  
 struct sNoeud {
 int mdonnee ; // code
 unsigned int mfreq ; // frequence du code
 sNoeud *mgauche ; // fils gauche
 sNoeud *mdroit ; // fils droit
+std::string mcode;
 sNoeud ( char d , unsigned int f ) {
     mgauche = NULL;
     mdroit = NULL;
@@ -30,16 +32,16 @@ struct compare{
     }
 };
 class cHuffman{
-    int *mTrame;
-    uint8_t mLongueur;
+    int* mTrame;
+    unsigned int* mFrequence;
+    unsigned int mLongueur;
     sNoeud *mRacine;
-
-    void AfficherHuffman(sNoeud* Racine,std::string code)const;
+    void Generatecodes( sNoeud* Racine,std::string code="");
 public:
-cHuffman();
+cHuffman(const int* Trame,const unsigned int* Frequence,const unsigned int& Longueur);
 ~cHuffman();
 int* getTrame()const;
-uint8_t getLongueur()const;
+unsigned int getLongueur()const;
 sNoeud* getRacine()const;
 
 void setTrame();
@@ -47,6 +49,7 @@ void setLongueur();
 void setRacine();
 
 
-void HuffmanCodes(int* Donnee ,unsigned int* Frequence ,unsigned int Taille );
-void AfficherHuffman()const;
+void HuffmanCodes();
+void Generatecodes();
+void decode(const std::string& input,const char* file_name="Decoded.txt")const;
 };
