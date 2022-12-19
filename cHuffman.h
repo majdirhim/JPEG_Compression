@@ -27,17 +27,24 @@ sNoeud ( char d , unsigned int f ) {
     }
 };
 
-struct compare{
+struct compare_less{
     bool operator()(sNoeud* gauche,sNoeud *droit){
         return gauche->mfreq > droit->mfreq;
     }
-};
+}; /*for huffman Tree Queue*/ 
+
+struct compare_great{
+    bool operator()(sNoeud* gauche,sNoeud *droit){
+        return gauche->mfreq < droit->mfreq;
+    }
+}; /*for huffman Code generator Queue*/ 
+
 class cHuffman{
     int* mTrame;
     unsigned int* mFrequence;
     unsigned int mLongueur; /*data length*/
     sNoeud *mRacine;
-    void Generatecodes( sNoeud* Racine,std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare>& Q,std::string code="");
+    void Generatecodes( sNoeud* Racine,std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare_great>& Q,std::string code="");
 public:
 cHuffman(const int* Trame,const unsigned int* Frequence,const unsigned int& Longueur);
 ~cHuffman();
@@ -51,6 +58,6 @@ void setRacine();
 
 
 void HuffmanCodes();
-std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare> Generatecodes();
+std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare_great> Generatecodes();
 void decode(const std::string& input,const char* file_name="Decoded.txt")const;
 };

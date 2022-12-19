@@ -424,7 +424,7 @@ void cCompression::Ecriture_Flot(int* Trame, const char* filename){
     Histogramme(Trame,get_cpltTrameSize(),Donne,Freq);
     cHuffman h = cHuffman(Donne,Freq,get_HistoSize());
     h.HuffmanCodes(); //create the tree
-    std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare> Q = h.Generatecodes(); //generate huffman codes
+    std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare_great> Q = h.Generatecodes(); //generate huffman codes
     file=fopen(filename,"w");
     while(!Q.empty()){
         fprintf(file,"%s",Q.top()->mcode.c_str()); //write shortest code first

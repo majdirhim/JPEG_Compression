@@ -55,7 +55,7 @@ sNoeud* cHuffman::getRacine()const{
  * @param Taille : size of arrays
  */
 void cHuffman::HuffmanCodes(){
-    std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare> Q;
+    std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare_less> Q;
     for(unsigned int i =0;i<mLongueur;i++)
         Q.push(new sNoeud(mTrame[i],mFrequence[i]));
     while(Q.size()!=1){
@@ -77,8 +77,8 @@ void cHuffman::HuffmanCodes(){
  * 
  * @return std::unordered_map<unsigned int ,std::string > : map of frequencies and their respective codes
  */
-std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare> cHuffman::Generatecodes(){
-    std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare> Q;
+std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare_great> cHuffman::Generatecodes(){
+    std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare_great> Q;
     Generatecodes(this->mRacine,Q);
     return Q;
 }
@@ -90,14 +90,14 @@ std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare> cHuffman::Generatecod
  * @param Racine : root node address
  * @param code : node code, by default it's set to ""
  */
-void cHuffman::Generatecodes( sNoeud* Racine , std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare>& Q,std::string code ){
+void cHuffman::Generatecodes( sNoeud* Racine , std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare_great>& Q,std::string code ){
     if(Racine!=NULL){
         Racine->mcode=code; //store codes in each node
         Generatecodes(Racine->mgauche,Q,code+"0");
         Generatecodes(Racine->mdroit,Q,code+"1");
         if(Racine->mdonnee!='~'){
             /**Print the Tree**/
-            Q.push(Racine);
+            Q.push(Racine); //Storing Nodes by frequency 
             //printf("Data=%d \t\t %d\n\r",Racine->mdonnee,Racine->mfreq);
             printf("Data= %d\tcode=%s\r\n",Racine->mdonnee,Racine->mcode.c_str()); //debug
         }
