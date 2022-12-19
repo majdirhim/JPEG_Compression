@@ -411,11 +411,27 @@ void cCompression::Histogramme(int* Trame, unsigned int Longueur_Trame, int* Don
 }
 
 /**
- * @brief 
+ * @brief Determine data Trame frequencies, create huffman tree,\n generate huffman codes and store them in a file
+ * accoriding to their length
  * 
  * @param Trame : pointer to the complete image Trame
- * @param filename : file name by default it's set to Flow.txt
+ * @param filename : the file name, by default it is set to Flow.txt
  */
-void cCompression::Ecriture_Flot(const int* Trame, const char* filename){
-    
+void cCompression::Ecriture_Flot(int* Trame, const char* filename){
+    FILE* file;
+    int Donne[128*128];
+    unsigned int Freq[128*128];
+    Histogramme(Trame,get_cpltTrameSize(),Donne,Freq);
+    cHuffman h = cHuffman(Donne,Freq,get_HistoSize());
+    h.HuffmanCodes(); //create the tree
+    std::unordered_map<unsigned int ,std::string > freq_code = h.Generatecodes(); //generate huffman codes
+    std::priority_queue<unsigned int> Q;
+    for(unsigned int i = 0; i<get_HistoSize();i++)
+        Q.push(Freq[i]);
+    file=fopen(filename,"w");
+    while(!Q.empty()){
+        fprintf(file,"%s",freq_code[Q.top()].c_str()); //write shortest code first
+        Q.pop();
+    }
+    fclose(file);
 }

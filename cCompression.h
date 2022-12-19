@@ -15,7 +15,7 @@
 #include <cstdio>
 #include <cmath>
 #include <queue>
-
+#include "cHuffman.h"
 #define Bloc8 8 /*Single Bloc size*/
 
 /**
@@ -90,5 +90,5 @@ public:
 
     void Histogramme(int* Trame, unsigned int Longueur_Trame, int* Donnee , unsigned int* Frequence);
 
-    void Ecriture_Flot(const int* Trame, const char* filename="Flow.txt");
+    void Ecriture_Flot( int* Trame, const char* filename="Flow.txt");
 };

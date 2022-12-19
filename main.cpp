@@ -16,11 +16,7 @@ int main(){
     unsigned int Freq[128*128];
     cCompression test("lenna.txt");
     test.RLE(cpltTrame);
-    test.Histogramme(cpltTrame,test.get_cpltTrameSize(),Donne,Freq);    
-    cHuffman h = cHuffman(Donne,Freq,test.get_HistoSize());
-    h.HuffmanCodes();
-    h.Generatecodes();
-    h.decode("1011100");
+    test.Ecriture_Flot(cpltTrame,"Testing.txt");
 return 0;
 }
 

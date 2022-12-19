@@ -48,7 +48,7 @@ sNoeud* cHuffman::getRacine()const{
 }
 
 /**
- * @brief Private function to Create the Huffman Tree
+ * @brief function to Create the Huffman Tree
  * 
  * @param Donnee :pointer to array of data
  * @param Frequence :pointer array of data frequency occurence
@@ -73,25 +73,29 @@ void cHuffman::HuffmanCodes(){
     Q.pop();
 }
 /**
- * @brief Public function to Generate the Huffman codes for each node and print the Tree
+ * @brief function to Generate the Huffman codes for each node and print the Tree
  * 
+ * @return std::unordered_map<unsigned int ,std::string > : map of frequencies and their respective codes
  */
-void cHuffman::Generatecodes(){
-    Generatecodes(this->mRacine);
+std::unordered_map<unsigned int ,std::string > cHuffman::Generatecodes(){
+    std::unordered_map<unsigned int ,std::string > freq_code ;
+    Generatecodes(this->mRacine,freq_code);
+    return freq_code;
 }
 
 
 /**
- * @brief Private function to Generate Huffman codes for each node and print the Tree
+ * @brief Helper function to Generate Huffman codes for each node and print the Tree
  * 
  * @param Racine : root node address
  * @param code : node code, by default it's set to ""
  */
-void cHuffman::Generatecodes( sNoeud* Racine , std::string code){
+void cHuffman::Generatecodes( sNoeud* Racine , std::unordered_map<unsigned int ,std::string >& freq_code,std::string code ){
     if(Racine!=NULL){
         Racine->mcode=code; //store codes in each node
-        Generatecodes(Racine->mgauche,code+"0");
-        Generatecodes(Racine->mdroit,code+"1");
+        freq_code[Racine->mfreq]=Racine->mcode;
+        Generatecodes(Racine->mgauche,freq_code,code+"0");
+        Generatecodes(Racine->mdroit,freq_code,code+"1");
         if(Racine->mdonnee!='~'){
             /**Print the Tree*/
             printf("Data= %d\tcode=%s\r\n",Racine->mdonnee,Racine->mcode.c_str());
