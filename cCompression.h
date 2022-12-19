@@ -76,6 +76,8 @@ public:
     void set_mHauteur(unsigned int HAU);
     void set_mQualite(unsigned int Q);
 
+    void Compress();
+private:
     void Calcul_DCT_Block(uint8_t (*Block8x8)[Bloc8],double(*DCT_Img)[Bloc8])const;
     void Calcul_iDCT(double(*DCT_Img)[Bloc8],uint8_t  (*Block8x8)[Bloc8])const;
     void quant_JPEG(double(*DCT_Img)[Bloc8],int (*Img_Quant)[Bloc8])const;

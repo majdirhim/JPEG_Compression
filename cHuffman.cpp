@@ -85,7 +85,7 @@ std::unordered_map<unsigned int ,std::string > cHuffman::Generatecodes(){
 
 
 /**
- * @brief Helper function to Generate Huffman codes for each node and print the Tree
+ * @brief Private Helper function to Generate Huffman codes for each node and print the Tree
  * 
  * @param Racine : root node address
  * @param code : node code, by default it's set to ""
@@ -93,12 +93,13 @@ std::unordered_map<unsigned int ,std::string > cHuffman::Generatecodes(){
 void cHuffman::Generatecodes( sNoeud* Racine , std::unordered_map<unsigned int ,std::string >& freq_code,std::string code ){
     if(Racine!=NULL){
         Racine->mcode=code; //store codes in each node
-        freq_code[Racine->mfreq]=Racine->mcode;
         Generatecodes(Racine->mgauche,freq_code,code+"0");
         Generatecodes(Racine->mdroit,freq_code,code+"1");
         if(Racine->mdonnee!='~'){
-            /**Print the Tree*/
-            printf("Data= %d\tcode=%s\r\n",Racine->mdonnee,Racine->mcode.c_str());
+            /**Print the Tree**/
+            freq_code[Racine->mfreq]=Racine->mcode;
+            //printf("Data=%d \t\t %d\n\r",Racine->mdonnee,Racine->mfreq);
+            printf("Data= %d\tcode=%s\r\n",Racine->mdonnee,Racine->mcode.c_str()); //debug
         }
     }
 }

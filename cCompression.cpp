@@ -28,7 +28,7 @@ cCompression::cCompression(const char *imagePath){
  * 
  */
 cCompression::~cCompression(){
-    
+    delete [] mBuffer;
 }
 /**
  * @brief getter for mQualite : Compression quality \n 
@@ -343,7 +343,7 @@ for(unsigned int i=1,j=0;i<Bloc8*Bloc8;i++){
 /**
  * @brief Apply RLE for all image's blocks and Concatenate all the trames
  * 
- * @param CpltTrame : Complete Image's Trame
+ * @param CpltTrame :[OUT] Complete Image's Trame
  */
 void cCompression::RLE(int* CpltTrame){
     int  Qimg[8][8];
@@ -434,4 +434,15 @@ void cCompression::Ecriture_Flot(int* Trame, const char* filename){
         Q.pop();
     }
     fclose(file);
+    
+}
+
+/**
+ * @brief Compressing a luminance image
+ * 
+ */
+void cCompression::Compress(){
+    int cpltTrame[128*128];
+    RLE(cpltTrame); // The Lossy part compression (DCT-Quantification ...)
+    Ecriture_Flot(cpltTrame); //The Lossless part compression (Huffman)
 }

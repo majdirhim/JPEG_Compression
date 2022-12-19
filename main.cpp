@@ -11,12 +11,8 @@
 //#include "cCompression.h"
 #include "cHuffman.h"
 int main(){
-    int cpltTrame[128*128];
-    int Donne[128*128];
-    unsigned int Freq[128*128];
     cCompression test("lenna.txt");
-    test.RLE(cpltTrame);
-    test.Ecriture_Flot(cpltTrame,"Testing.txt");
+    test.Compress();
 return 0;
 }
 
