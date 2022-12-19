@@ -37,7 +37,7 @@ class cHuffman{
     unsigned int* mFrequence;
     unsigned int mLongueur; /*data length*/
     sNoeud *mRacine;
-    void Generatecodes( sNoeud* Racine,std::unordered_map<unsigned int ,std::string >& freq_code,std::string code="");
+    void Generatecodes( sNoeud* Racine,std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare>& Q,std::string code="");
 public:
 cHuffman(const int* Trame,const unsigned int* Frequence,const unsigned int& Longueur);
 ~cHuffman();
@@ -51,6 +51,6 @@ void setRacine();
 
 
 void HuffmanCodes();
-std::unordered_map<unsigned int ,std::string > Generatecodes();
+std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare> Generatecodes();
 void decode(const std::string& input,const char* file_name="Decoded.txt")const;
 };

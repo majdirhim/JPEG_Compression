@@ -424,17 +424,13 @@ void cCompression::Ecriture_Flot(int* Trame, const char* filename){
     Histogramme(Trame,get_cpltTrameSize(),Donne,Freq);
     cHuffman h = cHuffman(Donne,Freq,get_HistoSize());
     h.HuffmanCodes(); //create the tree
-    std::unordered_map<unsigned int ,std::string > freq_code = h.Generatecodes(); //generate huffman codes
-    std::priority_queue<unsigned int> Q;
-    for(unsigned int i = 0; i<get_HistoSize();i++)
-        Q.push(Freq[i]);
+    std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare> Q = h.Generatecodes(); //generate huffman codes
     file=fopen(filename,"w");
     while(!Q.empty()){
-        fprintf(file,"%s",freq_code[Q.top()].c_str()); //write shortest code first
+        fprintf(file,"%s",Q.top()->mcode.c_str()); //write shortest code first
         Q.pop();
     }
     fclose(file);
-    
 }
 
 /**

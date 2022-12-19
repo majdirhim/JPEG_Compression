@@ -77,10 +77,10 @@ void cHuffman::HuffmanCodes(){
  * 
  * @return std::unordered_map<unsigned int ,std::string > : map of frequencies and their respective codes
  */
-std::unordered_map<unsigned int ,std::string > cHuffman::Generatecodes(){
-    std::unordered_map<unsigned int ,std::string > freq_code ;
-    Generatecodes(this->mRacine,freq_code);
-    return freq_code;
+std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare> cHuffman::Generatecodes(){
+    std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare> Q;
+    Generatecodes(this->mRacine,Q);
+    return Q;
 }
 
 
@@ -90,14 +90,14 @@ std::unordered_map<unsigned int ,std::string > cHuffman::Generatecodes(){
  * @param Racine : root node address
  * @param code : node code, by default it's set to ""
  */
-void cHuffman::Generatecodes( sNoeud* Racine , std::unordered_map<unsigned int ,std::string >& freq_code,std::string code ){
+void cHuffman::Generatecodes( sNoeud* Racine , std::priority_queue<sNoeud*, std::vector<sNoeud*>,compare>& Q,std::string code ){
     if(Racine!=NULL){
         Racine->mcode=code; //store codes in each node
-        Generatecodes(Racine->mgauche,freq_code,code+"0");
-        Generatecodes(Racine->mdroit,freq_code,code+"1");
+        Generatecodes(Racine->mgauche,Q,code+"0");
+        Generatecodes(Racine->mdroit,Q,code+"1");
         if(Racine->mdonnee!='~'){
             /**Print the Tree**/
-            freq_code[Racine->mfreq]=Racine->mcode;
+            Q.push(Racine);
             //printf("Data=%d \t\t %d\n\r",Racine->mdonnee,Racine->mfreq);
             printf("Data= %d\tcode=%s\r\n",Racine->mdonnee,Racine->mcode.c_str()); //debug
         }
