@@ -1,7 +1,7 @@
 /**
  * @file cCompression.cpp
  * @author Majdi Rhim
- * @brief 
+ * @brief Source file for cCompression class
  * @version 0.1
  * @date 2022-11-29
  * 
@@ -103,7 +103,7 @@ void cCompression::set_mQualite(unsigned int Q){
     mQualite=Q;
 }
 /**
- * @brief calculate the coefficient c(k)
+ * @brief Helper function to calculate the coefficient c(k)
  * 
  * @param u :value between 1--->7
  * @return double 
@@ -115,7 +115,7 @@ double cCompression::coeff(unsigned int u)const{
 }
 
 /**
- * @brief scale the values to be between -127 and 128 
+ * @brief Helper Function to scale the values to be between -127 and 128 
  * @param Block8x8
  */
 void cCompression::toSigned(uint8_t (*Block8x8)[Bloc8])const{
@@ -129,7 +129,7 @@ void cCompression::toSigned(uint8_t (*Block8x8)[Bloc8])const{
 /**
  * @brief Apply the Discrete cosine transform function to a block of image 8x8
  * 
- * @param DCT_Img : pointer to array of double
+ * @param DCT_Img :[OUT] pointer to array of double that will contain the DCT output
  * @param Block8x8 : pointer to array of uint8_t
  */
 
@@ -151,7 +151,7 @@ void cCompression::Calcul_DCT_Block(uint8_t (*Block8x8)[Bloc8],double(*DCT_Img)[
  * @brief Apply the inverse discrete cosine transform to a DCT encoded image 8x8
  * 
  * @param DCT_Img : pointer to array of double
- * @param Block8x8 : pointer to array of uint8_t
+ * @param Block8x8 :[out] pointer to array of uint8_t that will contain the iDCT output
  */
 
 void cCompression::Calcul_iDCT(double(*DCT_Img)[Bloc8],uint8_t  (*Block8x8)[Bloc8])const{
@@ -178,7 +178,7 @@ double cCompression::lambda(unsigned int Quality)const{
     return ( Quality<50 ? 5000.0/Quality : 200.0-(2.0*Quality) );
 }
 /**
- * @brief return Quantification table value in each [i][j] coordinates
+ * @brief Helper function to return Quantification table value in each [i][j] coordinates
  * 
  * @param i :row index
  * @param j :column index
@@ -218,7 +218,7 @@ for(unsigned int u=0 ; u<Bloc8 ;u++)
 }
 
 /**
- * @brief Determine the root mean square deviation 
+ * @brief Determine the root mean square deviation for a Bloc 8X8
  * 
  */
 double cCompression::EQM(uint8_t (*Bloc8x8)[Bloc8],uint8_t (*IDCT)[Bloc8])const{
@@ -304,7 +304,7 @@ switch(state){
 }
 t++; //increment
 Trame[t]=Qimg[i][j];
-Trame_average+=Trame[t]; /*somme of the trame's values*/ 
+Trame_average+=Trame[t]; /*sum of the trame's values*/ 
 //printf("state : %d\t i=%d\t j=%d\t t=%d\r\n",state,i,j,t); /*debug*/
 }while(state!=Exit);
 }
@@ -341,7 +341,8 @@ for(unsigned int i=1,j=0;i<Bloc8*Bloc8;i++){
 }
 }
 /**
- * @brief Apply RLE for all image's blocks and Concatenate all the trames
+ * @brief Apply the Run Length Encoding for all image's bloc and Concatenate all the trames\n 
+ * And Determine 
  * 
  * @param CpltTrame :[OUT] Complete Image's Trame
  */
@@ -362,7 +363,7 @@ void cCompression::RLE(int* CpltTrame){
         }
         //printf("\r\n");
         offsetIndex+=Bloc8*Bloc8;
-        Calcul_DCT_Block(Bloc,DCT_img);     
+        Calcul_DCT_Block(Bloc,DCT_img);
         quant_JPEG(DCT_img,Qimg);
         RLE_Block(Qimg,m_DC_precedent,Trame);
         TConcatenate(CpltTrame,Trame);

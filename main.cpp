@@ -1,7 +1,7 @@
 /**
  * @file main.cpp
  * @author Majdi Rhim
- * @brief 
+ * @brief main file to test the compression on the Lenna image
  * @version 0.1
  * @date 2022-11-29
  * 

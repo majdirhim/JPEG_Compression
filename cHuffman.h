@@ -1,7 +1,9 @@
 /**
  * @file cHuffman.h
  * @author Majdi
- * @brief 
+ * @brief This class handles the lossless part of compressing, it creates the Humffman Tree\n
+ * generates Huffman codes for each node and store them in a file by code length to achieve maximum entropy\n 
+ * and finaly it decodes an encoded string.   
  * @version 0.1
  * @date 2022-12-05
  * 
@@ -13,6 +15,10 @@
 #include <queue>
 #include <string>  
 #include <unordered_map>
+/**
+ * @brief Huffman tree node's struct
+ * 
+ */
 struct sNoeud {
 int mdonnee ; // code
 unsigned int mfreq ; // frequence du code
@@ -26,19 +32,30 @@ sNoeud ( char d , unsigned int f ) {
     this->mfreq = f ;
     }
 };
-
+/**
+ * @brief Overloading the () operator for the huffman Tree priority Queue comparision\n
+ * it prioritize low frequencies
+ * 
+ */
 struct compare_less{
     bool operator()(sNoeud* gauche,sNoeud *droit){
         return gauche->mfreq > droit->mfreq;
     }
-}; /*for huffman Tree Queue*/ 
-
+};
+/**
+ * @brief Overloading the () operator for the for huffman Code generator priority Queue comparision\n 
+ * it prioritize high frequencies
+ * 
+ */
 struct compare_great{
     bool operator()(sNoeud* gauche,sNoeud *droit){
         return gauche->mfreq < droit->mfreq;
     }
-}; /*for huffman Code generator Queue*/ 
-
+}; 
+/**
+ * @brief CHuffman Class definition
+ * 
+ */
 class cHuffman{
     int* mTrame;
     unsigned int* mFrequence;
